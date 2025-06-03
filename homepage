@@ -1,0 +1,134 @@
+import React, { useState, useEffect } from "react";
+
+export default function HytteturApp() {
+  const [scores, setScores] = useState([]);
+  const [newName, setNewName] = useState("");
+
+  // Load from localStorage
+  useEffect(() => {
+    const savedScores = localStorage.getItem("hyttetur-scores");
+    if (savedScores) {
+      setScores(JSON.parse(savedScores));
+    }
+  }, []);
+
+  // Save to localStorage
+  useEffect(() => {
+    localStorage.setItem("hyttetur-scores", JSON.stringify(scores));
+  }, [scores]);
+
+  const agendaFriday = [
+    { time: "10:00", event: "Frokost" },
+    { time: "11:00", event: "Stafett" },
+    { time: "13:00", event: "Lunsj i solveggen" },
+  ];
+
+  const agendaSaturday = [
+    { time: "15:00", event: "Quiz" },
+    { time: "18:00", event: "Middag og premieutdeling" },
+  ];
+
+  const addPoint = (index) => {
+    const updated = [...scores];
+    updated[index].score += 1;
+    setScores(updated);
+  };
+
+  const subtractPoint = (index) => {
+    const updated = [...scores];
+    updated[index].score = Math.max(0, updated[index].score - 1);
+    setScores(updated);
+  };
+
+  const addParticipant = () => {
+    if (newName.trim() === "") return;
+    setScores([...scores, { name: newName.trim(), score: 0 }]);
+    setNewName("");
+  };
+
+  const sortedScores = [...scores].sort((a, b) => b.score - a.score);
+
+  return (
+    <div className="p-6 max-w-4xl mx-auto text-center">
+      {/* Header med bilde */}
+      <header className="mb-6">
+        <img
+          src="/bilde-av-gjengen.jpg"
+          alt="Gjengen på hyttetur"
+          className="w-full h-64 object-cover rounded-2xl shadow-md mb-4"
+        />
+        <h1 className="text-3xl font-bold">🏕️ Hyttetur 2025</h1>
+      </header>
+
+      <section className="mb-8">
+        <h2 className="text-xl font-semibold mb-2">🏆 Scoreboard</h2>
+        <ul className="text-left">
+          {sortedScores.map((person, i) => (
+            <li key={i} className="flex justify-between items-center mb-2">
+              <span>{person.name}</span>
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={() => subtractPoint(scores.findIndex(p => p.name === person.name))}
+                  className="bg-gray-300 hover:bg-gray-400 text-black px-2 py-1 rounded"
+                >
+                  -1
+                </button>
+                <span className="w-20 text-center">{person.score} poeng</span>
+                <button
+                  onClick={() => addPoint(scores.findIndex(p => p.name === person.name))}
+                  className="bg-pink-400 hover:bg-pink-500 text-white px-2 py-1 rounded"
+                >
+                  +1
+                </button>
+              </div>
+            </li>
+          ))}
+        </ul>
+      </section>
+
+      <section className="mb-8">
+        <h2 className="text-xl font-semibold mb-2">📅 Agenda</h2>
+        <div className="grid grid-cols-2 gap-8 text-left">
+          <div>
+            <h3 className="text-lg font-bold mb-1">Fredag</h3>
+            <ul>
+              {agendaFriday.map((item, i) => (
+                <li key={i} className="mb-1">
+                  <span className="font-medium">{item.time}:</span> {item.event}
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div>
+            <h3 className="text-lg font-bold mb-1">Lørdag</h3>
+            <ul>
+              {agendaSaturday.map((item, i) => (
+                <li key={i} className="mb-1">
+                  <span className="font-medium">{item.time}:</span> {item.event}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <h2 className="text-xl font-semibold mb-2">➕ Legg til deltaker</h2>
+        <div className="flex gap-2 justify-center">
+          <input
+            value={newName}
+            onChange={(e) => setNewName(e.target.value)}
+            placeholder="Navn"
+            className="border px-2 py-1 rounded"
+          />
+          <button
+            onClick={addParticipant}
+            className="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded"
+          >
+            Legg til
+          </button>
+        </div>
+      </section>
+    </div>
+  );
+}
