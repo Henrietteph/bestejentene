@@ -1,0 +1,42 @@
+:root {
+  --cream: #fff9ef;
+  --ink: #182d26;
+  --muted: #6f766d;
+  --coral: #e85d4d;
+  --sage: #dfe8d7;
+  --line: rgba(24, 45, 38, .18);
+  --body: 'Avenir Next', 'Segoe UI', sans-serif;
+  --display: Georgia, 'Times New Roman', serif;
+  color: var(--ink);
+  background: var(--cream);
+  font-family: var(--body);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  min-width: 320px;
+  background: var(--cream);
+}
+
+body {
+  min-width: 320px;
+  min-height: 100vh;
+  margin: 0;
+}
+
+button,
+input {
+  font-family: inherit;
+}
+
+button:focus-visible,
+a:focus-visible {
+  outline: 2px solid var(--coral);
+  outline-offset: 3px;
+}
