@@ -9,6 +9,7 @@ type SydenbabesPageProps = {
 }
 
 const eventId = 'sydenbabes-2026'
+const apiUrl = import.meta.env.VITE_API_URL ?? 'http://localhost:3000'
 
 const loadScores = (): Participant[] => {
   const savedScores = localStorage.getItem(`${eventId}-scores`) ?? localStorage.getItem('hyttetur-scores')
@@ -45,8 +46,6 @@ export default function SydenbabesPage({ onBack, onOpenSummary, onScoresChange }
   const [newName, setNewName] = useState('')
 
   useEffect(() => {
-    const apiUrl = import.meta.env.VITE_API_URL ?? 'http://localhost:3000'
-
     fetch(`${apiUrl}/api/hello`)
       .then((response) => {
         if (!response.ok) throw new Error(`HTTP error: ${response.status}`)
@@ -54,6 +53,19 @@ export default function SydenbabesPage({ onBack, onOpenSummary, onScoresChange }
       })
       .then((data) => setMessage(data.message))
       .catch(() => setMessage('Kunne ikke kontakte backend'))
+  }, [])
+
+  useEffect(() => {
+    fetch(`${apiUrl}/api/participants`)
+      .then((response) => {
+        if (!response.ok) throw new Error(`HTTP error: ${response.status}`)
+        return response.json() as Promise<Participant[]>
+      })
+      .then((participants) => {
+        setScores(participants)
+        localStorage.setItem(`${eventId}-scores`, JSON.stringify(participants))
+      })
+      .catch(() => undefined)
   }, [])
 
   useEffect(() => {
@@ -73,11 +85,18 @@ export default function SydenbabesPage({ onBack, onOpenSummary, onScoresChange }
   ]
 
   const updateScore = (name: string, amount: number) => {
-    setScores((currentScores) => currentScores.map((participant) => (
-      participant.name === name
-        ? { ...participant, score: Math.max(0, participant.score + amount) }
-        : participant
+    const participant = scores.find((item) => item.name === name)
+    if (!participant) return
+
+    const nextScore = Math.max(0, participant.score + amount)
+    setScores((currentScores) => currentScores.map((item) => (
+      item.name === name ? { ...item, score: nextScore } : item
     )))
+    void fetch(`${apiUrl}/api/participants/${encodeURIComponent(name)}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name, score: nextScore }),
+    })
   }
 
   const addParticipant = () => {
@@ -86,6 +105,16 @@ export default function SydenbabesPage({ onBack, onOpenSummary, onScoresChange }
 
     setScores((currentScores) => [...currentScores, { name, score: 0 }])
     setNewName('')
+    void fetch(`${apiUrl}/api/participants`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name, score: 0 }),
+    })
+  }
+
+  const deleteParticipant = (name: string) => {
+    setScores((currentScores) => currentScores.filter((participant) => participant.name !== name))
+    void fetch(`${apiUrl}/api/participants/${encodeURIComponent(name)}`, { method: 'DELETE' })
   }
 
   const sortedScores = [...scores].sort((a, b) => b.score - a.score || a.name.localeCompare(b.name))
@@ -135,6 +164,7 @@ export default function SydenbabesPage({ onBack, onOpenSummary, onScoresChange }
                   <div className="score-controls">
                     <button type="button" onClick={() => updateScore(person.name, -1)} className="score-button score-button-minus" aria-label={`Trekk fra poeng for ${person.name}`}>-</button>
                     <button type="button" onClick={() => updateScore(person.name, 1)} className="score-button score-button-plus" aria-label={`Legg til poeng for ${person.name}`}>+</button>
+                    <button type="button" onClick={() => deleteParticipant(person.name)} className="score-button score-button-delete" aria-label={`Slett ${person.name}`} title={`Slett ${person.name}`}>×</button>
                   </div>
                 </li>
               ))}
