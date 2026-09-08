@@ -23,7 +23,12 @@ app.get("/api/summary/:participantName", async (req, res) => {
 
     res.json({ participant: req.params.participantName, scores: summary })
   } catch (error) {
-    console.error("Kunne ikke hente data fra Google Sheets:", error)
+    const googleError = error as { message?: string; response?: { status?: number; data?: { error?: { message?: string } } } }
+    console.error("Kunne ikke hente data fra Google Sheets:", {
+      message: googleError.message,
+      status: googleError.response?.status,
+      details: googleError.response?.data?.error?.message,
+    })
     res.status(500).json({ error: "Kunne ikke hente data fra Google Sheets" })
   }
 });
