@@ -1,14 +1,31 @@
 import { getGoogleSheetId, getGoogleSheetsClient } from '../config/googleSheets.js'
 
-export const getParticipantSummary = async (participantName: string) => {
+type SheetCellValue = string | number | boolean
+
+export const readSheetData = async (range: string) => {
   const sheets = getGoogleSheetsClient()
-  const range = process.env.GOOGLE_SUMMARY_RANGE ?? 'A:Z'
   const response = await sheets.spreadsheets.values.get({
     spreadsheetId: getGoogleSheetId(),
     range,
   })
 
-  const rows = response.data.values ?? []
+  return response.data.values ?? []
+}
+
+export const appendRowData = async (range: string, values: SheetCellValue[][]) => {
+  const sheets = getGoogleSheetsClient()
+
+  await sheets.spreadsheets.values.append({
+    spreadsheetId: getGoogleSheetId(),
+    range,
+    valueInputOption: 'USER_ENTERED',
+    requestBody: { values },
+  })
+}
+
+export const getParticipantSummary = async (participantName: string) => {
+  const range = process.env.GOOGLE_SUMMARY_RANGE ?? 'A:Z'
+  const rows = await readSheetData(range)
   const [headers, ...dataRows] = rows
   const normalizedParticipantName = participantName.trim().toLocaleLowerCase()
   const participantRow = dataRows.find((row) => String(row[0] ?? '').trim().toLocaleLowerCase() === normalizedParticipantName)
