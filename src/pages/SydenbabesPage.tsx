@@ -168,7 +168,7 @@ export default function SydenbabesPage({ onBack, onOpenSummary, onScoresChange }
               <p className="eyebrow">Dette skjer</p>
               <h2 id="agenda-title">Agenda</h2>
             </div>
-            <span className="section-count">Helgeplan</span>
+            <span className="section-count"></span>
           </div>
           <div className="agenda-grid">
             <AgendaDay dayNumber="01" title="Fredag" items={agendaFriday} />
@@ -192,7 +192,6 @@ export default function SydenbabesPage({ onBack, onOpenSummary, onScoresChange }
 
       <footer className="site-footer">
         <span>Bestejentene / Sydentur 2026</span>
-        <span>Frokost · stafett · quiz · premie</span>
       </footer>
     </main>
   )
