@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import FerskenUtenBakgrunn from '../assets/FerskenUtenBakgrunn.png'
+import flybabes from '../assets/flybabes.png'
 import type { Participant } from '../types'
 
 type SydenbabesPageProps = {
@@ -140,7 +140,7 @@ export default function SydenbabesPage({ onBack, onOpenSummary, onScoresChange }
           <h1 id="page-title">Sydenbabes <span> </span><span>2026</span></h1>
           <p>backend sier: {message}</p>
         </div>
-        <img src={FerskenUtenBakgrunn} alt="Illustrasjon av verdens fineste pus" className="fersken-image" />
+        <img src={flybabes} alt="Illustrasjon av verdens fineste bestejenter" className="fersken-image" />
       </section>
 
       <div className="content-grid">
