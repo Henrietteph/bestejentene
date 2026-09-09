@@ -2,6 +2,7 @@ import { getGoogleSheetId, getGoogleSheetsClient } from '../config/googleSheets.
 
 type SheetCellValue = string | number | boolean
 type Participant = { name: string; score: number }
+type ParticipantInput = Participant & { password?: string; email?: string }
 
 export const readSheetData = async (range: string) => {
   const sheets = getGoogleSheetsClient()
@@ -30,6 +31,8 @@ const getParticipantRows = async () => {
     rowNumber: index + 2,
     name: String(row[0] ?? '').trim(),
     score: Number(row[1] ?? 0),
+    password: String(row[2] ?? ''),
+    email: String(row[3] ?? '').trim(),
   }))
 }
 
@@ -40,11 +43,16 @@ export const getParticipants = async (): Promise<Participant[]> => {
     .map(({ name, score }) => ({ name, score: Number.isFinite(score) ? score : 0 }))
 }
 
-export const createParticipant = async (participant: Participant) => {
-  await appendRowData(process.env.GOOGLE_SUMMARY_RANGE ?? 'A:Z', [[participant.name, participant.score]])
+export const createParticipant = async (participant: ParticipantInput) => {
+  await appendRowData(process.env.GOOGLE_SUMMARY_RANGE ?? 'A:Z', [[
+    participant.name,
+    participant.score,
+    participant.password ?? '',
+    participant.email ?? '',
+  ]])
 }
 
-export const updateParticipant = async (participant: Participant) => {
+export const updateParticipant = async (participant: ParticipantInput) => {
   const rows = await getParticipantRows()
   const row = rows.find((item) => item.name.toLocaleLowerCase() === participant.name.trim().toLocaleLowerCase())
 
@@ -53,9 +61,14 @@ export const updateParticipant = async (participant: Participant) => {
   const sheets = getGoogleSheetsClient()
   await sheets.spreadsheets.values.update({
     spreadsheetId: getGoogleSheetId(),
-    range: `A${row.rowNumber}:B${row.rowNumber}`,
+    range: `A${row.rowNumber}:D${row.rowNumber}`,
     valueInputOption: 'USER_ENTERED',
-    requestBody: { values: [[participant.name.trim(), participant.score]] },
+    requestBody: { values: [[
+      participant.name.trim(),
+      participant.score,
+      participant.password ?? row.password,
+      participant.email ?? row.email,
+    ]] },
   })
   return true
 }
@@ -69,7 +82,7 @@ export const deleteParticipant = async (participantName: string) => {
   const sheets = getGoogleSheetsClient()
   await sheets.spreadsheets.values.clear({
     spreadsheetId: getGoogleSheetId(),
-    range: `A${row.rowNumber}:B${row.rowNumber}`,
+    range: `A${row.rowNumber}:D${row.rowNumber}`,
     requestBody: {},
   })
   return true

@@ -50,14 +50,24 @@ app.get("/api/participants", async (_req, res) => {
 });
 
 app.post("/api/participants", async (req, res) => {
-  const { name, score } = req.body as { name?: unknown; score?: unknown }
-  if (typeof name !== "string" || typeof score !== "number") {
-    res.status(400).json({ error: "name og score må være gyldige verdier" })
+  const { name, score, password, email } = req.body as {
+    name?: unknown
+    score?: unknown
+    password?: unknown
+    email?: unknown
+  }
+  if (
+    typeof name !== "string" ||
+    typeof score !== "number" ||
+    (password !== undefined && typeof password !== "string") ||
+    (email !== undefined && typeof email !== "string")
+  ) {
+    res.status(400).json({ error: "name og score må være gyldige verdier, og password/email må være tekst" })
     return
   }
 
   try {
-    await createParticipant({ name: name.trim(), score })
+    await createParticipant({ name: name.trim(), score, password, email })
     res.status(201).json({ name: name.trim(), score })
   } catch (error) {
     console.error("Kunne ikke opprette deltaker:", error)
@@ -66,14 +76,24 @@ app.post("/api/participants", async (req, res) => {
 });
 
 app.put("/api/participants/:participantName", async (req, res) => {
-  const { name, score } = req.body as { name?: unknown; score?: unknown }
-  if (typeof name !== "string" || typeof score !== "number") {
-    res.status(400).json({ error: "name og score må være gyldige verdier" })
+  const { name, score, password, email } = req.body as {
+    name?: unknown
+    score?: unknown
+    password?: unknown
+    email?: unknown
+  }
+  if (
+    typeof name !== "string" ||
+    typeof score !== "number" ||
+    (password !== undefined && typeof password !== "string") ||
+    (email !== undefined && typeof email !== "string")
+  ) {
+    res.status(400).json({ error: "name og score må være gyldige verdier, og password/email må være tekst" })
     return
   }
 
   try {
-    const updated = await updateParticipant({ name, score })
+    const updated = await updateParticipant({ name, score, password, email })
     if (!updated) {
       res.status(404).json({ error: "Fant ikke deltakeren" })
       return
