@@ -34,12 +34,8 @@ export default function LandingPage({ onSelectEvent, onOpenSummary }: LandingPag
             </span>
             <span className="event-option-arrow" aria-hidden="true">↗</span>
           </button>
-        </div>
-
-
-        <div className="event-options">
           <button type="button" className="event-option" onClick={() => onSelectEvent('hyttetur')}>
-            <span className="event-option-number">01</span>
+            <span className="event-option-number">02</span>
             <span className="event-option-copy">
               <strong>Hyttetur 2025</strong>
               <span>Hyttetur på Holmøyane</span>
