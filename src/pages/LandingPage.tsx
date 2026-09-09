@@ -1,3 +1,5 @@
+import ferskenUtenBakgrunn from '../assets/FerskenUtenBakgrunn.png'
+
 type LandingPageProps = {
   onSelectEvent: (eventId: string) => void
   onOpenSummary: () => void
@@ -15,9 +17,13 @@ export default function LandingPage({ onSelectEvent, onOpenSummary }: LandingPag
       </header>
 
       <section className="event-selection" aria-labelledby="event-selection-title">
-        <p className="eyebrow">Hva skjer nå?</p>
-        <h1 id="event-selection-title">Velg event</h1>
-        <p className="selection-intro">Gå inn på riktig side for å se agenda, deltakere og poeng.</p>
+        <div className="event-selection-copy">
+          <p className="eyebrow">Hva skjer nå?</p>
+          <h1 id="event-selection-title">Velg event</h1>
+          <p className="selection-intro">Gå inn på riktig side for å se agenda, deltakere og poeng.</p>
+        </div>
+
+        <img src={ferskenUtenBakgrunn} alt="" className="event-selection-image" />
 
         <div className="event-options">
           <button type="button" className="event-option" onClick={() => onSelectEvent('sydenbabes')}>

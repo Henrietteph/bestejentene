@@ -61,12 +61,25 @@
 }
 
 .event-selection {
+  display: flex;
+  align-items: center;
+  gap: 32px;
   max-width: 760px;
   padding: 96px 0 120px;
 }
 
+.event-selection-copy {
+  flex: 1;
+}
+
 .event-selection h1 {
   margin-bottom: 22px;
+}
+
+.event-selection-image {
+  width: 220px;
+  height: auto;
+  flex-shrink: 0;
 }
 
 .selection-intro {

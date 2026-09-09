@@ -7,3 +7,4 @@
 - Ta hensyn til at bruker er nybegynner og forklar ting på en enkel måte
 - Skriv på en kort og konsis måte, unngå lange forklaringer
 - Spør dersom du trenger mer informasjon før du gir et svar
+- Ikke prøv å få ting til å fungere lokalt, det skal fungere i skyen

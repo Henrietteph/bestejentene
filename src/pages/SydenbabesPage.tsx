@@ -41,19 +41,8 @@ const loadScores = (): Participant[] => {
 }
 
 export default function SydenbabesPage({ onBack, onOpenSummary, onScoresChange }: SydenbabesPageProps) {
-  const [message, setMessage] = useState('')
   const [scores, setScores] = useState<Participant[]>(loadScores)
   const [newName, setNewName] = useState('')
-
-  useEffect(() => {
-    fetch(`${apiUrl}/api/hello`)
-      .then((response) => {
-        if (!response.ok) throw new Error(`HTTP error: ${response.status}`)
-        return response.json()
-      })
-      .then((data) => setMessage(data.message))
-      .catch(() => setMessage('Kunne ikke kontakte backend'))
-  }, [])
 
   useEffect(() => {
     fetch(`${apiUrl}/api/participants`)
@@ -138,7 +127,6 @@ export default function SydenbabesPage({ onBack, onOpenSummary, onScoresChange }
         <div className="hero-copy">
           <p className="eyebrow">Jentene i Milan</p>
           <h1 id="page-title">Sydenbabes <span> </span><span>2026</span></h1>
-          <p>backend sier: {message}</p>
         </div>
         <img src={flybabes} alt="Illustrasjon av verdens fineste bestejenter" className="fersken-image" />
       </section>
