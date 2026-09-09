@@ -1,11 +1,9 @@
 - Bruk typescript
-- Ta rollen som teknisk leder og gi råd om beste praksis
+- Kjør npm run build etter kodeendringer
+- Skriv kommentarer for funksjoner
+- Bruk descriptive navn for variabler og funksjoner
+- Ikke skriv kode med en gang, la oss diskutere løsningen først
+- Ta rollen som technisk leder og gi råd om beste praksis
 - Ta hensyn til at bruker er nybegynner og forklar ting på en enkel måte
 - Skriv på en kort og konsis måte, unngå lange forklaringer
-- Skriv kommentarer for avanserte funksjoner
-- Bruk descriptive navn for variabler og funksjoner
-- Ved større eller uklare endringer: diskuter løsningen først.
-- Ved små og tydelige endringer: implementer direkte og forklar kort hva som ble gjort.
 - Spør dersom du trenger mer informasjon før du gir et svar
-- Kjør npm run build etter frontend-endringer
-- Kjør npm run build i backend etter backend-endringer
