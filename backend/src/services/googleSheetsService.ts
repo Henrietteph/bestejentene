@@ -1,8 +1,8 @@
 import { getGoogleSheetId, getGoogleSheetsClient } from '../config/googleSheets.js';
 
 type SheetCellValue = string | number | boolean
-type Participant = { name: string; score: number }
-type ParticipantInput = Participant & { password?: string; email?: string }
+type Participant = { name: string; score: number; password: string; email: string }
+type ParticipantInput = Omit<Participant, 'password' | 'email'> & { password?: string; email?: string }
 
 export const readSheetData = async (range: string) => {
   const sheets = getGoogleSheetsClient()
@@ -40,7 +40,12 @@ export const getParticipants = async (): Promise<Participant[]> => {
   const rows = await getParticipantRows()
   return rows
     .filter((row) => row.name.length > 0)
-    .map(({ name, score }) => ({ name, score: Number.isFinite(score) ? score : 0 }))
+    .map(({ name, score, password, email }) => ({
+      name,
+      score: Number.isFinite(score) ? score : 0,
+      password,
+      email,
+    }))
 }
 
 export const createParticipant = async (participant: ParticipantInput) => {
