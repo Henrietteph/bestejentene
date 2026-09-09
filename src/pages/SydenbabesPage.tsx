@@ -9,7 +9,7 @@ type SydenbabesPageProps = {
 }
 
 const eventId = 'sydenbabes-2026'
-const apiUrl = import.meta.env.VITE_API_URL ?? 'http://localhost:3000'
+const apiUrl = 'https://bestejentene-api.onrender.com'
 
 const loadScores = (): Participant[] => {
   const savedScores = localStorage.getItem(`${eventId}-scores`) ?? localStorage.getItem('hyttetur-scores')
