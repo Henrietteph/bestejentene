@@ -58,6 +58,7 @@ export default function AdminPage({ onBack }: AdminPageProps) {
       setPassword('')
       setEmail('')
       setErrorMessage('')
+      window.location.reload()
     } catch {
       setErrorMessage('Kunne ikke legge til deltakeren.')
     }

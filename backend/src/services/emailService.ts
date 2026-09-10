@@ -30,7 +30,7 @@ Kos og klem fra Bestejentene`
 
 export const sendRegistrationEmail = async (participant: RegistrationEmailData) => {
   const gmailUser = getRequiredEnvironmentVariable('GMAIL_USER')
-  const gmailAppPassword = getRequiredEnvironmentVariable('GMAIL_APP_PASSWORD')
+  const gmailAppPassword = getRequiredEnvironmentVariable('GMAIL_APP_PASSWORD').replace(/\s/g, '')
 
   const transporter = nodemailer.createTransport({
     service: 'gmail',
@@ -40,10 +40,12 @@ export const sendRegistrationEmail = async (participant: RegistrationEmailData) 
     },
   })
 
-  await transporter.sendMail({
+  const result = await transporter.sendMail({
     from: gmailUser,
     to: participant.email,
     subject: 'Du har blitt registrert hos Bestejentene',
     text: registrationEmailTemplate(participant),
   })
+
+  console.log(`Registreringsmail sendt til ${participant.email}. Meldings-ID: ${result.messageId}`)
 }

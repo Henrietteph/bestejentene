@@ -84,7 +84,12 @@ app.post("/api/participants", async (req, res) => {
     await sendRegistrationEmail(registeredParticipant)
     res.status(201).json({ name: normalizedName, score })
   } catch (error) {
-    console.error("Kunne ikke opprette deltaker eller sende e-post:", error)
+    const mailError = error as { code?: string; response?: string; message?: string }
+    console.error("Kunne ikke opprette deltaker eller sende e-post:", {
+      code: mailError.code,
+      response: mailError.response,
+      message: mailError.message,
+    })
     res.status(500).json({ error: "Deltakeren ble lagret, men e-posten kunne ikke sendes" })
   }
 });
