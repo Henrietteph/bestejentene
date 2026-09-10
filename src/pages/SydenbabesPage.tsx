@@ -62,15 +62,16 @@ export default function SydenbabesPage({ onBack, onOpenSummary, onScoresChange }
     onScoresChange(scores)
   }, [scores, onScoresChange])
 
-  const agendaFriday = [
-    { time: '10:00', event: 'Frokost' },
-    { time: '11:00', event: 'Stafett' },
-    { time: '13:00', event: 'Lunsj i solveggen' },
+  const flightTimesToMilan = [
+    { time: '06:40', event: 'Henriette og Silje, ankomst Milano' },
+    { time: '07:15', event: 'Anette og Petrine, ankomst Milano' },
+    { time: '08:05', event: 'Hedda og Sandra, ankomst Milano' },
   ]
 
-  const agendaSaturday = [
-    { time: '15:00', event: 'Quiz' },
-    { time: '18:00', event: 'Middag og premieutdeling' },
+  const flightTimesToOslo = [
+    { time: '12:10', event: 'Avreise Oslo' },
+    { time: '13:00', event: 'Avreise Bergen' },
+    { time: '14:20', event: 'Avreise Vigra' },
   ]
 
   const updateScore = (name: string, amount: number) => {
@@ -162,17 +163,17 @@ export default function SydenbabesPage({ onBack, onOpenSummary, onScoresChange }
           )}
         </section>
 
-        <section className="agenda-section" aria-labelledby="agenda-title">
+        <section className="agenda-section" aria-labelledby="flight-times-title">
           <div className="section-heading">
             <div>
-              <p className="eyebrow">Dette skjer</p>
-              <h2 id="agenda-title">Agenda</h2>
+              <p className="eyebrow">Reiseplan</p>
+              <h2 id="flight-times-title">Flytider</h2>
             </div>
             <span className="section-count"></span>
           </div>
           <div className="agenda-grid">
-            <AgendaDay dayNumber="01" title="Fredag" items={agendaFriday} />
-            <AgendaDay dayNumber="02" title="Lørdag" items={agendaSaturday} saturday />
+            <AgendaDay dayNumber="01" title="Til Milano" items={flightTimesToMilan} />
+            <AgendaDay dayNumber="02" title="Til Oslo" items={flightTimesToOslo} saturday />
           </div>
         </section>
 
