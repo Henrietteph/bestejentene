@@ -2,13 +2,13 @@ import { useEffect, useState } from 'react'
 import flybabes from '../assets/flybabes.png'
 import type { Participant } from '../types'
 
-type SydenbabesPageProps = {
+type HyttebabesPageProps = {
   onBack: () => void
   onOpenSummary: () => void
   onScoresChange: (scores: Participant[]) => void
 }
 
-const eventId = 'sydenbabes-2026'
+const eventId = 'hyttetur-2025'
 const apiUrl = (import.meta.env.VITE_API_URL ?? 'https://bestejentene.onrender.com').replace(/\/+$/, '')
 
 const loadScores = (): Participant[] => {
@@ -40,7 +40,7 @@ const loadScores = (): Participant[] => {
   }
 }
 
-export default function SydenbabesPage({ onBack, onOpenSummary, onScoresChange }: SydenbabesPageProps) {
+export default function HyttebabesPage({ onBack, onOpenSummary, onScoresChange }: HyttebabesPageProps) {
   const [scores, setScores] = useState<Participant[]>(loadScores)
   const [newName, setNewName] = useState('')
 
@@ -63,14 +63,27 @@ export default function SydenbabesPage({ onBack, onOpenSummary, onScoresChange }
   }, [scores, onScoresChange])
 
   const agendaFriday = [
-    { time: '10:00', event: 'Frokost' },
-    { time: '11:00', event: 'Stafett' },
+    { time: '11:00', event: 'Ankomst' },
     { time: '13:00', event: 'Lunsj i solveggen' },
+    { time: '15:00', event: 'Stafett' },
+    { time: '18:00', event: 'Middag' },
+    { time: '21:00', event: 'Kortskalle, Sykkylven edition' },
   ]
 
   const agendaSaturday = [
+    { time: '10:00', event: 'Frokost' },
+    { time: '11:00', event: 'Bading' },
+    { time: '13:00', event: 'Lunsj i solveggen' },
     { time: '15:00', event: 'Quiz' },
-    { time: '18:00', event: 'Middag og premieutdeling' },
+    { time: '18:00', event: 'Middag' },
+    { time: '21:00', event: 'Mario Kart turnering' },
+    { time: '23:00', event: 'Premieutdeling' },
+  ]
+
+    const agendaSunday = [
+    { time: '11:00', event: 'God morgen!' },
+    { time: '12:00', event: 'Rydde, vaske, pakke' },
+    { time: '14:00', event: 'Heimreise' },
   ]
 
   const updateScore = (name: string, amount: number) => {
@@ -173,6 +186,7 @@ export default function SydenbabesPage({ onBack, onOpenSummary, onScoresChange }
           <div className="agenda-grid">
             <AgendaDay dayNumber="01" title="Fredag" items={agendaFriday} />
             <AgendaDay dayNumber="02" title="Lørdag" items={agendaSaturday} saturday />
+            <AgendaDay dayNumber="03" title="Søndag" items={agendaSunday} />
           </div>
         </section>
 
@@ -191,7 +205,7 @@ export default function SydenbabesPage({ onBack, onOpenSummary, onScoresChange }
       </div>
 
       <footer className="site-footer">
-        <span>Bestejentene / Sydentur 2026</span>
+        <span>Bestejentene / Hyttetur 2025</span>
         <span>Frokost · stafett · quiz · premie</span>
       </footer>
     </main>
