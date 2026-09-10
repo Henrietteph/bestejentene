@@ -1,11 +1,12 @@
 import cors from "cors";
 import express from "express";
+import { sendRegistrationEmail } from "./services/emailService.js";
 import {
-    createParticipant,
-    deleteParticipant,
-    getParticipantSummary,
-    getParticipants,
-    updateParticipant,
+  createParticipant,
+  deleteParticipant,
+  getParticipantSummary,
+  getParticipants,
+  updateParticipant,
 } from "./services/googleSheetsService.js";
 
 const app = express();
@@ -59,19 +60,32 @@ app.post("/api/participants", async (req, res) => {
   if (
     typeof name !== "string" ||
     typeof score !== "number" ||
-    (password !== undefined && typeof password !== "string") ||
-    (email !== undefined && typeof email !== "string")
+    typeof password !== "string" ||
+    typeof email !== "string"
   ) {
-    res.status(400).json({ error: "name og score må være gyldige verdier, og password/email må være tekst" })
+    res.status(400).json({ error: "name, score, password og email må være gyldige verdier" })
     return
   }
 
   try {
-    await createParticipant({ name: name.trim(), score, password, email })
-    res.status(201).json({ name: name.trim(), score })
+    const normalizedName = name.trim()
+    const normalizedEmail = email.trim()
+    await createParticipant({ name: normalizedName, score, password, email: normalizedEmail })
+    const participants = await getParticipants()
+    const registeredParticipant = participants.find((participant) => (
+      participant.name === normalizedName && participant.email === normalizedEmail
+    ))
+
+    if (!registeredParticipant) {
+      res.status(500).json({ error: "Deltakeren ble lagret, men kunne ikke hentes for e-post" })
+      return
+    }
+
+    await sendRegistrationEmail(registeredParticipant)
+    res.status(201).json({ name: normalizedName, score })
   } catch (error) {
-    console.error("Kunne ikke opprette deltaker:", error)
-    res.status(500).json({ error: "Kunne ikke opprette deltaker" })
+    console.error("Kunne ikke opprette deltaker eller sende e-post:", error)
+    res.status(500).json({ error: "Deltakeren ble lagret, men e-posten kunne ikke sendes" })
   }
 });
 

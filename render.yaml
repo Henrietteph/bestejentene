@@ -16,3 +16,7 @@ services:
         value: A:Z
       - key: FRONTEND_URL
         sync: false
+      - key: GMAIL_USER
+        value: hpholmoy@gmail.com
+      - key: GMAIL_APP_PASSWORD
+        sync: false

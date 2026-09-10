@@ -115,7 +115,7 @@ export default function SydenbabesPage({ onBack, onOpenSummary, onScoresChange }
           <p className="eyebrow">Jentene i Milan</p>
           <h1 id="page-title">Sydenbabes <span> </span><span>2026</span></h1>
         </div>
-        <img src={flybabes} alt="Illustrasjon av verdens fineste bestejenter" className="fersken-image" />
+        <img src={flybabes} alt="Illustrasjon av verdens fineste bestejenter" className="hero-image" />
       </section>
 
       <div className="content-grid">
