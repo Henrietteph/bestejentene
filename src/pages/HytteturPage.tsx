@@ -141,7 +141,7 @@ export default function HyttebabesPage({ onBack, onOpenSummary, onScoresChange }
           <p className="eyebrow">Jentene på Holmøyane</p>
           <h1 id="page-title">Hyttebabes <span> </span><span>2025</span></h1>
         </div>
-        <img src={hyttebabes} alt="Illustrasjon av verdens fineste bestejenter" className="fersken-image" />
+        <img src={hyttebabes} alt="Illustrasjon av verdens fineste bestejenter" className="hero-image" />
       </section>
 
       <div className="content-grid">
