@@ -3,9 +3,10 @@ import ferskenUtenBakgrunn from '../assets/FerskenUtenBakgrunn.png'
 type LandingPageProps = {
   onSelectEvent: (eventId: string) => void
   onOpenSummary: () => void
+  onOpenAdmin: () => void
 }
 
-export default function LandingPage({ onSelectEvent, onOpenSummary }: LandingPageProps) {
+export default function LandingPage({ onSelectEvent, onOpenSummary, onOpenAdmin }: LandingPageProps) {
   return (
     <main className="app-shell event-selection-page">
       <header className="site-header">
@@ -46,6 +47,9 @@ export default function LandingPage({ onSelectEvent, onOpenSummary }: LandingPag
 
         <button type="button" className="summary-link" onClick={onOpenSummary}>
           Se samlet poengoppsummering <span aria-hidden="true">↗</span>
+        </button>
+        <button type="button" className="admin-link" onClick={onOpenAdmin}>
+          Åpne admin <span aria-hidden="true">↗</span>
         </button>
       </section>
     </main>
