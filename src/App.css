@@ -218,6 +218,35 @@
   gap: 0 72px;
 }
 
+.admin-login {
+  max-width: 460px;
+  padding: 82px 0 120px;
+}
+
+.admin-login h1 {
+  margin-bottom: 32px;
+}
+
+.admin-login form {
+  display: grid;
+  gap: 12px;
+}
+
+.admin-login input {
+  width: 100%;
+  padding: 13px 14px;
+  border: 1px solid var(--line);
+  border-radius: 0;
+  color: var(--ink);
+  background: transparent;
+  font: inherit;
+}
+
+.admin-login input:focus {
+  border-color: var(--coral);
+  outline: 0;
+}
+
 .admin-form-section,
 .admin-list-section {
   padding: 52px 0 60px;
