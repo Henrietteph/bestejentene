@@ -42,7 +42,6 @@ const loadScores = (): Participant[] => {
 
 export default function SydenbabesPage({ onBack, onOpenSummary, onScoresChange }: SydenbabesPageProps) {
   const [scores, setScores] = useState<Participant[]>(loadScores)
-  const [newName, setNewName] = useState('')
 
   useEffect(() => {
     fetch(`${apiUrl}/api/participants`)
@@ -63,15 +62,15 @@ export default function SydenbabesPage({ onBack, onOpenSummary, onScoresChange }
   }, [scores, onScoresChange])
 
   const flightTimesToMilan = [
-    { time: '06:40', event: 'Henriette og Silje, ankomst Milano' },
-    { time: '07:15', event: 'Anette og Petrine, ankomst Milano' },
-    { time: '08:05', event: 'Hedda og Sandra, ankomst Milano' },
+    { time: '06:40', event: 'Henriette og Silje' },
+    { time: '07:15', event: 'Anette og Petrine' },
+    { time: '08:05', event: 'Hedda og Sandra' },
   ]
 
   const flightTimesToOslo = [
-    { time: '12:10', event: 'Avreise Oslo' },
-    { time: '13:00', event: 'Avreise Bergen' },
-    { time: '14:20', event: 'Avreise Vigra' },
+    { time: '12:10', event: 'Henriette og Silje' },
+    { time: '13:00', event: 'Anette og Petrine' },
+    { time: '14:20', event: 'Hedda og Sandra' },
   ]
 
   const updateScore = (name: string, amount: number) => {
@@ -86,19 +85,6 @@ export default function SydenbabesPage({ onBack, onOpenSummary, onScoresChange }
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ name, score: nextScore }),
-    })
-  }
-
-  const addParticipant = () => {
-    const name = newName.trim()
-    if (name === '') return
-
-    setScores((currentScores) => [...currentScores, { name, score: 0 }])
-    setNewName('')
-    void fetch(`${apiUrl}/api/participants`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ name, score: 0 }),
     })
   }
 
@@ -173,22 +159,10 @@ export default function SydenbabesPage({ onBack, onOpenSummary, onScoresChange }
           </div>
           <div className="agenda-grid">
             <AgendaDay dayNumber="01" title="Til Milano" items={flightTimesToMilan} />
-            <AgendaDay dayNumber="02" title="Til Oslo" items={flightTimesToOslo} saturday />
+            <AgendaDay dayNumber="02" title="Heimreise" items={flightTimesToOslo} saturday />
           </div>
         </section>
 
-        <section className="add-section" aria-labelledby="add-title">
-          <div>
-            <p className="eyebrow">Klar for start</p>
-            <h2 id="add-title">Legg til deltaker</h2>
-            <p className="add-description">Skriv inn et navn for å bli med på kampen.</p>
-          </div>
-          <form className="add-form" onSubmit={(event) => { event.preventDefault(); addParticipant() }}>
-            <label className="sr-only" htmlFor="participant-name">Navn</label>
-            <input id="participant-name" value={newName} onChange={(event) => setNewName(event.target.value)} placeholder="Skriv et navn" className="name-input" maxLength={40} />
-            <button type="submit" className="add-button">Legg til <span aria-hidden="true">↗</span></button>
-          </form>
-        </section>
       </div>
 
       <footer className="site-footer">

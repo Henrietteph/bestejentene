@@ -42,7 +42,6 @@ const loadScores = (): Participant[] => {
 
 export default function HyttebabesPage({ onBack, onOpenSummary, onScoresChange }: HyttebabesPageProps) {
   const [scores, setScores] = useState<Participant[]>(loadScores)
-  const [newName, setNewName] = useState('')
 
   useEffect(() => {
     fetch(`${apiUrl}/api/participants`)
@@ -98,19 +97,6 @@ export default function HyttebabesPage({ onBack, onOpenSummary, onScoresChange }
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ name, score: nextScore }),
-    })
-  }
-
-  const addParticipant = () => {
-    const name = newName.trim()
-    if (name === '') return
-
-    setScores((currentScores) => [...currentScores, { name, score: 0 }])
-    setNewName('')
-    void fetch(`${apiUrl}/api/participants`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ name, score: 0 }),
     })
   }
 
@@ -190,18 +176,6 @@ export default function HyttebabesPage({ onBack, onOpenSummary, onScoresChange }
           </div>
         </section>
 
-        <section className="add-section" aria-labelledby="add-title">
-          <div>
-            <p className="eyebrow">Klar for start</p>
-            <h2 id="add-title">Legg til deltaker</h2>
-            <p className="add-description">Skriv inn et navn for å bli med på kampen.</p>
-          </div>
-          <form className="add-form" onSubmit={(event) => { event.preventDefault(); addParticipant() }}>
-            <label className="sr-only" htmlFor="participant-name">Navn</label>
-            <input id="participant-name" value={newName} onChange={(event) => setNewName(event.target.value)} placeholder="Skriv et navn" className="name-input" maxLength={40} />
-            <button type="submit" className="add-button">Legg til <span aria-hidden="true">↗</span></button>
-          </form>
-        </section>
       </div>
 
       <footer className="site-footer">
